@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/layout}">
+
+<div layout:fragment="content">
+	<div th:each="file : ${files}">
+		<img th:src="|https://wexport-bucket.s3.ap-northeast-2.amazonaws.com/${file}|" />
+		<button type="button" th:onclick="deleteFile([[${file}]], this)">삭제</button>
+	</div>
+	<a th:href="@{/}">홈으로</a>
+	
+	<script>
+		const deleteFile = (file, img) => {
+			const data = {
+				file: file,
+			}
+			
+			console.log(data);
+			ajax('/api/fileDelete', 'post', data)
+				.then((result) => {
+					alert(result.message);
+					img.closest('div').remove()
+				})
+				.catch((error) => console.log(error));
+		}
+	
+		//fehch 공통모듈
+		const ajax = async (url, method, body = {}) => {
+	
+			const options = {
+				method: method,
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify(body),
+			};
+	
+			const res = await fetch(url, options);
+	
+			const data = await res.json();
+	
+			if (res.status === 200) return data;
+			else if (res.status === 404) return data;
+			else if (res.status === 500) return data;
+			else throw Error(JSON.stringify(data));
+	
+		}
+	</script>
+</div>
+
+
+</html>

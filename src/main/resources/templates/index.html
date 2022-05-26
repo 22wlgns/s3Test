@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+      
+<div layout:fragment="content">
+    <div>
+        <h1>파일 업로드</h1>
+    	<form th:action="@{/fileUpload}" method="post" enctype="multipart/form-data">
+    		<fieldset>
+    			<input type="file" name="files" multiple/>
+    		</fieldset>
+    		<button type="submit">업로드</button >
+    	</form >
+    </div>
+</div>
+</html>
